@@ -1,6 +1,7 @@
 const prisma = require("../utils/prisma");
-const { hashPassword } = require("../utils/hash");
+const { hashPassword, comparePassword } = require("../utils/hash");
 const { userSchema } = require("../user/user.validation");
+const { generateToken } = require("../utils/jwt");
 
 const getAllUsers = async (req, res) => {
   try {
@@ -101,7 +102,6 @@ const deleteUser = async (req, res) => {
   }
 };
 
-//belum test
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -117,7 +117,8 @@ const loginUser = async (req, res) => {
       });
     }
 
-    const token = generateToken({ userId: user.id });
+    const token = generateToken({ id: user.id, email: user.email });
+    
     res.json({
       message: "Login successful",
       token,
