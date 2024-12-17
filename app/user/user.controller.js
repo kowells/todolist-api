@@ -117,15 +117,17 @@ const loginUser = async (req, res) => {
       });
     }
 
-    const token = generateToken({ id: user.id, email: user.email });
+    const token = generateToken({ 
+        id: user.id, email: user.email 
+        });
     
-    res.json({
+    return res.status(200).json({
       message: "Login successful",
       token,
     });
   } catch (error) {
-    res.status(400).json({
-      error: error.message,
+    return res.status(400).json({
+      message: "Login failed",
     });
   }
 };

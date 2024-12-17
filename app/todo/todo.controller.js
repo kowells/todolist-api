@@ -22,15 +22,7 @@ const getAllTodo = async (req, res) => {
 const addTodo = async (req, res) => {
   try {
     const parse = todoSchema.safeParse(req.body);
-    console.log("User in Request:", req.user);
     const userId = req.user.id;
-
-    if (!userId) {
-      return res.status(400).json({
-        success: false,
-        message: "User ID is missing",
-      });
-    }
 
     if (!parse.success) {
       const errorMessage = parse.error.issues.map(
@@ -51,7 +43,7 @@ const addTodo = async (req, res) => {
         userId: userId,
       },
     });
-    return res.status(200).json({
+    return res.status(201).json({
       success: true,
       message: "Create todo success",
       data: todo,
@@ -69,7 +61,6 @@ const addTodo = async (req, res) => {
 const updateTodo = async (req, res) => {
   try {
     const { id } = req.params;
-
     const parse = todoSchema.safeParse(req.body);
 
     if (!parse.success) {
